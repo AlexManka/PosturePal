@@ -8,11 +8,11 @@ i2c.init(freq=100000, sda=pin20, scl=pin19)
 devices = i2c.scan()
 print(devices)
 
-# CHECK WAI ON MPU
+# CHECK WAI ON MPU0
 i2c.write(104, b'\x75')
 wai_reading = i2c.read(104, 1, repeat=False)
-WAI = int.from_bytes(wai_reading, "little")
-print(WAI) # should return 0x71 or 113
+WAI0 = int.from_bytes(wai_reading, "little")
+print(WAI0) # should return 0x71 or 113
 
 
 while True:
