@@ -2,18 +2,27 @@
 from microbit import *
 
 i2c.init(freq=100000, sda=pin20, scl=pin19)
-# print(int(i2c.scan()[0]))
+#print(int(i2c.scan()[0]))
 # 104 was printed
-i2caddr = 104
+i2caddr0 = 104
+i2caddr1 = 105 # accel with AD0 flipped high
 
 # takes in a reg (int) and data (hex/bin)
-def write_reg(reg_addr, data):
-    i2c.write(i2caddr, reg_addr.to_bytes(1, 'big') + data)
+def write_reg(device_no, reg_addr, data):
+    if device_no == 0:
+        addr = 104
+    else:
+        addr = 105
+    i2c.write(addr, reg_addr.to_bytes(1, 'big') + data)
 
 # takes in a reg (int) and number of bytes to read n (int)
-def read_reg(reg_addr, n):
-    i2c.write(i2caddr, reg_addr.to_bytes(1, 'big'))
-    return i2c.read(i2caddr, n)
+def read_reg(device_no, reg_addr, n):
+    if device_no == 0:
+        addr = 104
+    else:
+        addr = 105
+    i2c.write(addr, reg_addr.to_bytes(1, 'big'))
+    return i2c.read(addr, n)
 
 # acceleration conversion factor (from datasheet)
 aconv = 16384.0
@@ -30,18 +39,18 @@ aconv = 16384.0
 
 while True:
     #AccX
-    axhi = read_reg(59, 1)
-    axlo = read_reg(60, 1)
+    axhi = read_reg(0, 59, 1)
+    axlo = read_reg(0, 60, 1)
     ax = axhi + axlo
     
     #AccY
-    ayhi = read_reg(61, 1)
-    aylo = read_reg(62, 1)
+    ayhi = read_reg(0, 61, 1)
+    aylo = read_reg(0, 62, 1)
     ay = ayhi + aylo
     
     #AccZ
-    azhi = read_reg(63, 1)
-    azlo = read_reg(64, 1)
+    azhi = read_reg(0, 63, 1)
+    azlo = read_reg(0, 64, 1)
     az = azhi + azlo
     print(int.from_bytes(ax, 'big') / aconv)
     print(" ")
