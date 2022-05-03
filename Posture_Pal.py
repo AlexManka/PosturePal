@@ -33,24 +33,25 @@ while True:
     axhi = read_reg(59, 1)
     axlo = read_reg(60, 1)
     ax = axhi + axlo
-    print(int.from_bytes(ax, 'big') / aconv)
-    print('\n')
     
     #AccY
     ayhi = read_reg(61, 1)
     aylo = read_reg(62, 1)
     ay = ayhi + aylo
-    print(int.from_bytes(ax, 'big') / aconv)
-    print('\n')
     
     #AccZ
     azhi = read_reg(63, 1)
     azlo = read_reg(64, 1)
     az = azhi + azlo
+    print(int.from_bytes(ax, 'big') / aconv)
+    print(" ")
+    print(int.from_bytes(ay, 'big') / aconv)
+    print(" ")
     print(int.from_bytes(az, 'big') / aconv)
     print('\n')
     
-    print(int.from_bytes(read_reg(117, 1), 'big'))
+    # WHO AM I 
+    #print(int.from_bytes(read_reg(117, 1), 'big'))
     
     
     # Print out the micro:bit values
@@ -64,5 +65,4 @@ while True:
     # print(read_reg(125, 1))
     # print(read_reg(126, 1))
 
-    print('\n\n')
     sleep(100)
