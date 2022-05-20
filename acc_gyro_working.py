@@ -65,7 +65,6 @@ while True:
         print("signed_acc_y: " + str(acc_y))
         acc_z = ustruct.unpack(">h", az)[0] / aconv
         print("signed_acc_z: " + str(acc_z))
-        print('\n')
         
         # Calculate angles
         theta, psi, phi = calculate_acc_angles(acc_x, acc_y, acc_z)
@@ -75,18 +74,18 @@ while True:
         
         
         # Gyroscope code
-        i2c.write(104, b'\x45', repeat = False)
+        i2c.write(i2caddr, b'\x45', repeat = False)
         gyro_reading0 = i2c.read(i2caddr, 1)
-        i2c.write(104, b'\x46', repeat = False)
+        i2c.write(i2caddr, b'\x46', repeat = False)
         gyro_reading1 = i2c.read(i2caddr,1)
         gyro_reading = (gyro_reading0 + gyro_reading1)
         gyro_sint = ustruct.unpack(">h", gyro_reading)[0] / gconv
         print("gyro reading: " + str(gyro_sint))
+        print("\n")       
         
-        
-        # Set 0 to high, then low (for vibromotor)
-        pin0.write_digital(1)
-        sleep(1000)
-        pin0.write_digital(0)
-        sleep(1000)
-        print("\n")
+    # Set 0 to high, then low (for vibromotor)
+    pin0.write_digital(1)
+    sleep(1000)
+    pin0.write_digital(0)
+    sleep(1000)
+    print("\n")
