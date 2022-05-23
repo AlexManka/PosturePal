@@ -33,13 +33,20 @@ def calculate_z_axis_angle(old_tilt_angle, dt, phi, gyro_reading):
     z_angle = alpha * tilt_angle + (1 - alpha) * phi
     return z_angle, tilt_angle
 
+# Determines if the user is slouching
+def posture_check(angle):
+    if angle > 70.0:
+        display.show(Image.HAPPY)
+    else:
+        display.show(Image.SAD)
+
 # Acceleration and gyroscope conversion factors (from datasheet)
 aconv = 16384.0
 gconv = 131.0
 
 
-
 while True:
+    avg_angle = 0
     for i2caddr in i2caddrs:
         
         print("i2caddr: " + str(i2caddr))
@@ -81,11 +88,16 @@ while True:
         gyro_reading = (gyro_reading0 + gyro_reading1)
         gyro_sint = ustruct.unpack(">h", gyro_reading)[0] / gconv
         print("gyro reading: " + str(gyro_sint))
-        print("\n")       
+        print("\n")   
         
+        avg_angle += phi
+    
+    posture_check(avg_angle / 2.0)
     # Set 0 to high, then low (for vibromotor)
     pin0.write_digital(1)
-    sleep(1000)
+    print("high")
+    sleep(3000)
     pin0.write_digital(0)
-    sleep(1000)
+    print("low")
+    sleep(3000)
     print("\n")
